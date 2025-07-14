@@ -3,9 +3,11 @@ using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace AutomationAssignment
 {
@@ -81,6 +83,84 @@ namespace AutomationAssignment
 
 
 
+
+        }
+
+
+        [Test]
+
+        public void Testcase3()
+        {
+
+
+            driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://the-internet.herokuapp.com/add_remove_elements/");
+            driver.Manage().Window.Maximize();
+
+
+            // Locate the "Add Element" button
+            // This button can be located by its tag name 'button'
+            // or by its text content, or if it had an ID/Class
+            IWebElement addButton = null;
+            try
+            {
+                addButton = driver.FindElement(By.XPath("//button[text()='Add Element']"));
+                TestContext.WriteLine("Successfully located the 'Add Element' button.");
+            }
+            catch (NoSuchElementException)
+            {
+                Assert.Fail("The 'Add Element' button was not found on the page.");
+            }
+
+            // 1. Print its Tag Name
+            string tagName = addButton.TagName;
+            TestContext.WriteLine($"Tag Name: {tagName}");
+
+            // 2. Print its Attributes (like class or id)
+            string idAttribute = addButton.GetAttribute("id");
+            string classAttribute = addButton.GetAttribute("class");
+
+            TestContext.WriteLine($"ID Attribute: {(string.IsNullOrEmpty(idAttribute) ? "N/A (No ID)" : idAttribute)}");
+            TestContext.WriteLine($"Class Attribute: {(string.IsNullOrEmpty(classAttribute) ? "N/A (No Class)" : classAttribute)}");
+
+            // You can also get other attributes if you know they exist, e.g.:
+            // string typeAttribute = addButton.GetAttribute("type");
+            // TestContext.WriteLine($"Type Attribute: {(string.IsNullOrEmpty(typeAttribute) ? "N/A (No Type)" : typeAttribute)}");
+
+            // 3. Print its Location and Size on screen
+            Point location = addButton.Location;
+            Size size = addButton.Size;
+
+            TestContext.WriteLine($"Location on Screen (X, Y): ({location.X}, {location.Y})");
+            TestContext.WriteLine($"Size (Width x Height): {size.Width}x{size.Height}");
+
+            // 4. Check if it is enabled or not
+            bool isEnabled = addButton.Enabled;
+            TestContext.WriteLine($"Is Enabled: {isEnabled}");
+
+            // Basic Assertion to ensure the test passes if the button is found and enabled
+            Assert.IsTrue(isEnabled, "The 'Add Element' button is not enabled.");
+            Assert.AreEqual("Add Element", addButton.Text, "Button text does not match 'Add Element'.");
+
+            driver.Quit();
+
+        }
+        [Test]
+
+        public void Testcase4() {
+
+
+
+            driver = new ChromeDriver();
+            driver.Navigate().GoToUrl("https://aa-practice-test-automation.vercel.app/Pages/checkbox_Radio.html");
+            driver.Manage().Window.Maximize();
+
+            var checkBox1 = driver.FindElement(By.Id("Ahly"));
+            bool isOption2Selected = checkBox1.Selected;
+
+            TestContext.WriteLine($"'Option 2' Checkbox Status: Selected = {isOption2Selected}");
+
+            driver.Quit();
 
         }
 
